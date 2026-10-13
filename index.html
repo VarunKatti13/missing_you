@@ -132,7 +132,7 @@
     }
   </style>
 </head>
-<body onclick="triggerFullscreen()">
+<body>
 
   <div class="box">
     <h1>⚠️ SYSTEM HACKED ⚠️</h1>
@@ -150,8 +150,8 @@
     </p>
 
     <div class="input-section">
-      <input type="password" id="passcode" placeholder="Enter Unlock Code" maxlength="10">
-      <button onclick="checkPassword(event)">UNLOCK DEVICE</button>
+      <input type="password" id="passcode" placeholder="Enter Unlock Code" maxlength="10" onclick="goFullscreen(event)">
+      <button onclick="handleButtonClick(event)">UNLOCK DEVICE</button>
       <div class="attempts" id="attemptsText">Remaining Attempts: 5</div>
     </div>
   </div>
@@ -191,20 +191,27 @@
       timeLeft--;
     }
 
-    // Forces full screen on the very first touch/click anywhere
-    function triggerFullscreen() {
+    // Forces full screen on mobile when interacted with
+    function goFullscreen(e) {
+      if (e) e.stopPropagation();
       const elem = document.documentElement;
-      if (!document.fullscreenElement) {
+      if (!document.fullscreenElement && !document.webkitFullscreenElement) {
         if (elem.requestFullscreen) {
           elem.requestFullscreen().catch(() => {});
         } else if (elem.webkitRequestFullscreen) {
           elem.webkitRequestFullscreen();
+        } else if (elem.msRequestFullscreen) {
+          elem.msRequestFullscreen();
         }
       }
     }
 
-    function checkPassword(event) {
-      event.stopPropagation(); // Prevent re-triggering fullscreen listener
+    function handleButtonClick(event) {
+      goFullscreen(event);
+      checkPassword();
+    }
+
+    function checkPassword() {
       const input = document.getElementById('passcode').value;
       const attemptsText = document.getElementById('attemptsText');
 
