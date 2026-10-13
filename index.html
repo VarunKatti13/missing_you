@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>⚠️ CRITICAL SECURITY ALERT</title>
+  <title>⚠️ CLASSIFIED SECURE INTEL ⚠️</title>
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      background-color: #050811;
+      background-color: #020408;
       color: #00ff66;
       font-family: 'Courier New', Courier, monospace;
       min-height: 100vh;
@@ -19,19 +19,35 @@
       padding: 20px;
       text-align: center;
       user-select: none;
+      overflow: hidden;
+      position: relative;
+    }
+    /* Matrix background canvas */
+    #matrixCanvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      opacity: 0.25;
+      pointer-events: none;
     }
     .box {
+      position: relative;
+      z-index: 2;
       border: 2px solid #ff3333;
-      background: rgba(20, 5, 5, 0.95);
+      background: rgba(5, 10, 18, 0.95);
       padding: 30px 20px;
-      border-radius: 12px;
-      box-shadow: 0 0 25px rgba(255, 51, 51, 0.5);
+      border-radius: 4px;
+      box-shadow: 0 0 30px rgba(255, 51, 51, 0.4);
       max-width: 420px;
       width: 100%;
     }
     h1 {
       color: #ff3333;
-      font-size: 1.6rem;
+      font-size: 1.5rem;
+      letter-spacing: 2px;
       margin-bottom: 10px;
       animation: blink 1s infinite;
     }
@@ -41,31 +57,33 @@
       color: #ff3333;
       border: 1px solid #ff3333;
       padding: 8px;
-      border-radius: 6px;
-      background: rgba(255, 0, 0, 0.1);
+      border-radius: 2px;
+      background: rgba(255, 0, 0, 0.15);
       margin-bottom: 15px;
+      letter-spacing: 3px;
     }
     p {
-      color: #dddddd;
-      font-size: 1rem;
+      color: #aaccff;
+      font-size: 0.95rem;
       line-height: 1.5;
       margin-bottom: 15px;
     }
     .highlight {
-      background: rgba(255, 204, 0, 0.15);
-      color: #ffcc00;
+      background: rgba(0, 255, 102, 0.08);
+      color: #00ff66;
       padding: 12px;
-      border-radius: 8px;
-      border: 1px dashed #ffcc00;
+      border-radius: 2px;
+      border: 1px dashed #00ff66;
       font-weight: bold;
-      font-size: 1rem;
+      font-size: 0.95rem;
       margin-bottom: 15px;
     }
     .warning-text {
-      color: #ff3333;
+      color: #ff4444;
       font-weight: bold;
-      font-size: 0.9rem;
+      font-size: 0.85rem;
       margin-top: 10px;
+      text-transform: uppercase;
     }
     .input-section {
       margin-top: 15px;
@@ -74,37 +92,38 @@
       gap: 10px;
     }
     input {
-      background: #111;
+      background: #000;
       border: 2px solid #00ff66;
       color: #00ff66;
       padding: 12px;
       font-size: 1.2rem;
       text-align: center;
-      border-radius: 6px;
+      border-radius: 2px;
       font-family: inherit;
       letter-spacing: 3px;
       outline: none;
     }
     input:focus {
-      box-shadow: 0 0 10px rgba(0, 255, 102, 0.6);
+      box-shadow: 0 0 12px rgba(0, 255, 102, 0.7);
     }
     button {
-      background: #ff3333;
+      background: #990000;
       color: white;
-      border: none;
+      border: 1px solid #ff3333;
       padding: 12px;
       font-size: 1rem;
       font-weight: bold;
-      border-radius: 6px;
+      border-radius: 2px;
       cursor: pointer;
       font-family: inherit;
+      letter-spacing: 1px;
     }
     button:active {
       transform: scale(0.98);
     }
     .attempts {
-      color: #888;
-      font-size: 0.85rem;
+      color: #778899;
+      font-size: 0.8rem;
       margin-top: 8px;
     }
     @keyframes blink {
@@ -119,20 +138,24 @@
       background: rgba(0,0,0,0.95);
       justify-content: center;
       align-items: center;
-      z-index: 999;
+      z-index: 99;
       padding: 20px;
     }
     .modal-content {
-      background: #111;
+      background: #050a12;
       border: 2px solid #00ff66;
       padding: 30px;
-      border-radius: 15px;
+      border-radius: 4px;
       color: #fff;
       max-width: 380px;
+      box-shadow: 0 0 25px rgba(0, 255, 102, 0.3);
     }
   </style>
 </head>
 <body>
+
+  <!-- Matrix Digital Rain Canvas -->
+  <canvas id="matrixCanvas"></canvas>
 
   <div class="box">
     <h1>⚠️ SYSTEM HACKED ⚠️</h1>
@@ -158,19 +181,57 @@
 
   <div class="modal" id="successModal">
     <div class="modal-content">
-      <h2 style="color: #00ff66; margin-bottom: 15px;">🎉 DATA UNLOCKED! 🎉</h2>
-      <p style="color: #ccc; font-size: 1.1rem; line-height: 1.5;">
+      <h2 style="color: #00ff66; margin-bottom: 15px; letter-spacing: 1px;">🎉 DATA UNLOCKED! 🎉</h2>
+      <p style="color: #aaccff; font-size: 1rem; line-height: 1.5;">
         Kalindi! Your phone was never hacked. Never enter passwords to open, even if it comes from my number or unknown! ❤️
       </p>
     </div>
   </div>
 
   <script>
+    // Matrix Rain Script
+    const canvas = document.getElementById('matrixCanvas');
+    const ctx = canvas.getContext('2d');
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+
+    const letters = '01ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#\$%^&*';
+    const fontSize = 14;
+    let columns = canvas.width / fontSize;
+    const drops = [];
+    for (let x = 0; x < columns; x++) {
+      drops[x] = 1;
+    }
+
+    function drawMatrix() {
+      ctx.fillStyle = 'rgba(2, 4, 8, 0.1)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      ctx.fillStyle = '#00ff66';
+      ctx.font = fontSize + 'px monospace';
+
+      for (let i = 0; i < drops.length; i++) {
+        const text = letters.charAt(Math.floor(Math.random() * letters.length));
+        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+          drops[i] = 0;
+        }
+        drops[i]++;
+      }
+    }
+    setInterval(drawMatrix, 33);
+
+    // Timer & Prank Logic
     let remainingAttempts = 5;
-    let timeLeft = 60; // 1 minute in seconds
+    let timeLeft = 60;
     let timerInterval = null;
 
-    // Start timer on page load
     window.onload = function() {
       timerInterval = setInterval(updateTimer, 1000);
     };
@@ -191,7 +252,6 @@
       timeLeft--;
     }
 
-    // Forces full screen on mobile when interacted with
     function goFullscreen(e) {
       if (e) e.stopPropagation();
       const elem = document.documentElement;
@@ -216,7 +276,7 @@
       const attemptsText = document.getElementById('attemptsText');
 
       if (input === '1303') {
-        clearInterval(timerInterval); // Stop the countdown
+        clearInterval(timerInterval);
         confetti({ particleCount: 150, spread: 80, origin: { y: 0.6 } });
         document.getElementById('successModal').style.display = 'flex';
       } else {
