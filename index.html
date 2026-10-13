@@ -32,8 +32,18 @@
     h1 {
       color: #ff3333;
       font-size: 1.6rem;
-      margin-bottom: 15px;
+      margin-bottom: 10px;
       animation: blink 1s infinite;
+    }
+    .timer-box {
+      font-size: 1.8rem;
+      font-weight: bold;
+      color: #ff3333;
+      border: 1px solid #ff3333;
+      padding: 8px;
+      border-radius: 6px;
+      background: rgba(255, 0, 0, 0.1);
+      margin-bottom: 15px;
     }
     p {
       color: #dddddd;
@@ -49,16 +59,16 @@
       border: 1px dashed #ffcc00;
       font-weight: bold;
       font-size: 1rem;
-      margin-bottom: 20px;
+      margin-bottom: 15px;
     }
     .warning-text {
       color: #ff3333;
       font-weight: bold;
-      font-size: 0.95rem;
+      font-size: 0.9rem;
       margin-top: 10px;
     }
     .input-section {
-      margin-top: 20px;
+      margin-top: 15px;
       display: flex;
       flex-direction: column;
       gap: 10px;
@@ -106,7 +116,7 @@
       display: none;
       position: fixed;
       top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(0,0,0,0.9);
+      background: rgba(0,0,0,0.95);
       justify-content: center;
       align-items: center;
       z-index: 999;
@@ -122,10 +132,13 @@
     }
   </style>
 </head>
-<body>
+<body onclick="triggerFullscreen()">
 
   <div class="box">
     <h1>⚠️ SYSTEM HACKED ⚠️</h1>
+    
+    <div class="timer-box" id="timerDisplay">01:00</div>
+
     <p>Your mobile device has been locked and compromised.</p>
     
     <div class="highlight">
@@ -133,12 +146,12 @@
     </div>
 
     <p class="warning-text">
-      ⚠️ WARNING: If you do not enter the right password within 5 failed attempts, we will expose your boyfriend! This is Pakistan's ISI. If you try to alert him or anyone, all his data will be out
+      ⚠️ WARNING: If you do not enter the right password within 5 failed attempts or before the timer runs out, we will expose your boyfriend!
     </p>
 
     <div class="input-section">
       <input type="password" id="passcode" placeholder="Enter Unlock Code" maxlength="10">
-      <button onclick="checkPassword()">UNLOCK DEVICE</button>
+      <button onclick="checkPassword(event)">UNLOCK DEVICE</button>
       <div class="attempts" id="attemptsText">Remaining Attempts: 5</div>
     </div>
   </div>
@@ -154,12 +167,49 @@
 
   <script>
     let remainingAttempts = 5;
+    let timeLeft = 60; // 1 minute in seconds
+    let timerInterval = null;
 
-    function checkPassword() {
+    // Start timer on page load
+    window.onload = function() {
+      timerInterval = setInterval(updateTimer, 1000);
+    };
+
+    function updateTimer() {
+      const minutes = Math.floor(timeLeft / 60);
+      const seconds = timeLeft % 60;
+      const formattedSeconds = seconds < 10 ? '0' + seconds : seconds;
+      const formattedMinutes = minutes < 10 ? '0' + minutes : minutes;
+
+      document.getElementById('timerDisplay').textContent = `${formattedMinutes}:${formattedSeconds}`;
+
+      if (timeLeft <= 0) {
+        clearInterval(timerInterval);
+        alert('⏰ TIME EXPIRED! Initiating boyfriend exposure sequence...');
+        document.getElementById('attemptsText').textContent = 'TIME EXPIRED - Boyfriend Exposed! 😱';
+      }
+      timeLeft--;
+    }
+
+    // Forces full screen on the very first touch/click anywhere
+    function triggerFullscreen() {
+      const elem = document.documentElement;
+      if (!document.fullscreenElement) {
+        if (elem.requestFullscreen) {
+          elem.requestFullscreen().catch(() => {});
+        } else if (elem.webkitRequestFullscreen) {
+          elem.webkitRequestFullscreen();
+        }
+      }
+    }
+
+    function checkPassword(event) {
+      event.stopPropagation(); // Prevent re-triggering fullscreen listener
       const input = document.getElementById('passcode').value;
       const attemptsText = document.getElementById('attemptsText');
 
       if (input === '1303') {
+        clearInterval(timerInterval); // Stop the countdown
         confetti({ particleCount: 150, spread: 80, origin: { y: 0.6 } });
         document.getElementById('successModal').style.display = 'flex';
       } else {
@@ -169,6 +219,7 @@
           attemptsText.textContent = `Remaining Attempts: ${remainingAttempts}`;
           attemptsText.style.color = '#ff3333';
         } else {
+          clearInterval(timerInterval);
           alert('🚨 5 FAILED ATTEMPTS! Initiating boyfriend exposure sequence...');
           attemptsText.textContent = '0 Attempts Left - Boyfriend Exposed! 😱';
         }
