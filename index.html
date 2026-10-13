@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CRITICAL SYSTEM WARNING</title>
+  <title>⚠️ CRITICAL SECURITY ALERT</title>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
@@ -17,14 +18,15 @@
       align-items: center;
       padding: 20px;
       text-align: center;
+      user-select: none;
     }
     .box {
       border: 2px solid #ff3333;
-      background: rgba(20, 5, 5, 0.9);
+      background: rgba(20, 5, 5, 0.95);
       padding: 30px 20px;
       border-radius: 12px;
       box-shadow: 0 0 25px rgba(255, 51, 51, 0.5);
-      max-width: 400px;
+      max-width: 420px;
       width: 100%;
     }
     h1 {
@@ -35,9 +37,9 @@
     }
     p {
       color: #dddddd;
-      font-size: 1.1rem;
+      font-size: 1rem;
       line-height: 1.5;
-      margin-bottom: 20px;
+      margin-bottom: 15px;
     }
     .highlight {
       background: rgba(255, 204, 0, 0.15);
@@ -46,11 +48,77 @@
       border-radius: 8px;
       border: 1px dashed #ffcc00;
       font-weight: bold;
-      font-size: 1.1rem;
+      font-size: 1rem;
+      margin-bottom: 20px;
+    }
+    .warning-text {
+      color: #ff3333;
+      font-weight: bold;
+      font-size: 0.95rem;
+      margin-top: 10px;
+    }
+    .input-section {
+      margin-top: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    input {
+      background: #111;
+      border: 2px solid #00ff66;
+      color: #00ff66;
+      padding: 12px;
+      font-size: 1.2rem;
+      text-align: center;
+      border-radius: 6px;
+      font-family: inherit;
+      letter-spacing: 3px;
+      outline: none;
+    }
+    input:focus {
+      box-shadow: 0 0 10px rgba(0, 255, 102, 0.6);
+    }
+    button {
+      background: #ff3333;
+      color: white;
+      border: none;
+      padding: 12px;
+      font-size: 1rem;
+      font-weight: bold;
+      border-radius: 6px;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    button:active {
+      transform: scale(0.98);
+    }
+    .attempts {
+      color: #888;
+      font-size: 0.85rem;
+      margin-top: 8px;
     }
     @keyframes blink {
       0%, 100% { opacity: 1; }
       50% { opacity: 0.3; }
+    }
+    /* Modal Styling */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.9);
+      justify-content: center;
+      align-items: center;
+      z-index: 999;
+      padding: 20px;
+    }
+    .modal-content {
+      background: #111;
+      border: 2px solid #00ff66;
+      padding: 30px;
+      border-radius: 15px;
+      color: #fff;
+      max-width: 380px;
     }
   </style>
 </head>
@@ -59,10 +127,54 @@
   <div class="box">
     <h1>⚠️ SYSTEM HACKED ⚠️</h1>
     <p>Your mobile device has been locked and compromised.</p>
+    
     <div class="highlight">
-      Reach out to your boyfriend immediately to unlock your device!
+      Locked! Your phone is jacked. Reach out to your boyfriend for the unlock code!
+    </div>
+
+    <p class="warning-text">
+      ⚠️ WARNING: If you do not enter the right password within 5 failed attempts, we will expose your boyfriend! This is Pakistan ISI. If you try to alert him or anyone, all his data will be out
+    </p>
+
+    <div class="input-section">
+      <input type="password" id="passcode" placeholder="Enter Unlock Code" maxlength="10">
+      <button onclick="checkPassword()">UNLOCK DEVICE</button>
+      <div class="attempts" id="attemptsText">Remaining Attempts: 5</div>
     </div>
   </div>
+
+  <div class="modal" id="successModal">
+    <div class="modal-content">
+      <h2 style="color: #00ff66; margin-bottom: 15px;">🎉 PRANK UNLOCKED! 🎉</h2>
+      <p style="color: #ccc; font-size: 1.1rem; line-height: 1.5;">
+        Gotcha! Your phone was never hacked. Made you panic a little bit! ❤️
+      </p>
+    </div>
+  </div>
+
+  <script>
+    let remainingAttempts = 5;
+
+    function checkPassword() {
+      const input = document.getElementById('passcode').value;
+      const attemptsText = document.getElementById('attemptsText');
+
+      if (input === '1303') {
+        confetti({ particleCount: 150, spread: 80, origin: { y: 0.6 } });
+        document.getElementById('successModal').style.display = 'flex';
+      } else {
+        remainingAttempts--;
+        if (remainingAttempts > 0) {
+          alert('❌ INCORRECT PASSWORD! Try asking your boyfriend.');
+          attemptsText.textContent = `Remaining Attempts: ${remainingAttempts}`;
+          attemptsText.style.color = '#ff3333';
+        } else {
+          alert('🚨 5 FAILED ATTEMPTS! Initiating boyfriend exposure sequence...');
+          attemptsText.textContent = '0 Attempts Left - Boyfriend Exposed! 😱';
+        }
+      }
+    }
+  </script>
 
 </body>
 </html>
