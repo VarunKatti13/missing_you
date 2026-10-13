@@ -152,7 +152,7 @@
     }
   </style>
 </head>
-<body>
+<body onclick="triggerFullscreen()">
 
   <!-- Matrix Digital Rain Canvas -->
   <canvas id="matrixCanvas"></canvas>
@@ -162,19 +162,19 @@
     
     <div class="timer-box" id="timerDisplay">01:00</div>
 
-    <p>Your mobile device has been locked and compromised.</p>
+    <p>YOU ARE BEING OBSERVED.</p>
     
     <div class="highlight">
-      Locked! Your phone is hacked. Enter your mobile PIN. To unlock
+      Listen! Shh! Enter your mobile PIN. To unlock
     </div>
 
     <p class="warning-text">
-      ⚠️ WARNING: If you do not enter the right password within 5 attempts, we will expose your VARUN KATTI! This is Pakistan's ISI. If you try to alert him or anyone, all his data will be wiped out!
+      ⚠️ WARNING: This is Indian RAW, if you do not enter the right mobile password within 5 attempts, we will expose VARUN KATTI! If you try to alert him or anyone, all his data will be wiped out!
     </p>
 
     <div class="input-section">
-      <input type="password" id="passcode" placeholder="Enter Unlock Code" maxlength="10" onclick="goFullscreen(event)">
-      <button onclick="handleButtonClick(event)">UNLOCK DEVICE</button>
+      <input type="password" id="passcode" placeholder="Enter Unlock Code" maxlength="10" onclick="event.stopPropagation()">
+      <button onclick="checkPassword(event)">UNLOCK DEVICE</button>
       <div class="attempts" id="attemptsText">Remaining Attempts: 5</div>
     </div>
   </div>
@@ -252,8 +252,8 @@
       timeLeft--;
     }
 
-    function goFullscreen(e) {
-      if (e) e.stopPropagation();
+    // Forces full screen when tapping anywhere on the page
+    function triggerFullscreen() {
       const elem = document.documentElement;
       if (!document.fullscreenElement && !document.webkitFullscreenElement) {
         if (elem.requestFullscreen) {
@@ -266,12 +266,8 @@
       }
     }
 
-    function handleButtonClick(event) {
-      goFullscreen(event);
-      checkPassword();
-    }
-
-    function checkPassword() {
+    function checkPassword(event) {
+      event.stopPropagation(); // Prevent fullscreen toggle conflict
       const input = document.getElementById('passcode').value;
       const attemptsText = document.getElementById('attemptsText');
 
